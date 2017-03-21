@@ -4,11 +4,10 @@ import string
 from lxml import etree as ET
 import logging
 
-name_to_id = {}
 character_id = string.lowercase[:26]
 
 def writeXml(unit, dialogue_title, page, audio_file, character, text_to_print, out_file):
-    # text_to_print = [character, [tstart1, tstart2], [phrase1, phrase2] ]
+    name_to_id = {}
     root = ET.Element('karaoke_config')
     b = ET.SubElement(root, 'book_info')
     u = ET.SubElement(b, 'unit')
@@ -25,15 +24,19 @@ def writeXml(unit, dialogue_title, page, audio_file, character, text_to_print, o
     l.text = 'fr'
 
     c = ET.SubElement(k, 'characters')
-    c1 = ET.SubElement(c, 'character')
-    c1.attrib['id'] = 'teller'
-    c1.attrib['visible'] = 'false'
-    idx = 0
+
+    if 'Teller' not in character:        
+        c1 = ET.SubElement(c, 'character')
+        c1.attrib['id'] = 'teller'
+        c1.attrib['visible'] = 'false'
+        
+    idx = 0    
     for ch in character:
         c1 = ET.SubElement(c, 'character')        
         c1.attrib['id'] = character_id[idx]
-        name_to_id[ch] = character_id[idx]
-        #print isinstance(ch,unicode)
+        if ch == 'Teller':
+            c1.attrib['visible'] = 'true'            
+        name_to_id[ch] = character_id[idx]        
         c1.text = ch
         idx = idx + 1
 
