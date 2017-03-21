@@ -3,11 +3,13 @@ import re
 import writeXml
 import io
 import logging
+import collections
 from subprocess import call
 
 def split(unit, dialogue, page, dialogue_title, file_name, flag):
-    name = {}
-    ordered_character = []
+    #name = {}
+    name = collections.OrderedDict()
+    #ordered_character = []
     speech_text = ['null', 'null']
     speech_line_spoken_by = []
     path = file_name['dir']
@@ -45,8 +47,8 @@ def split(unit, dialogue, page, dialogue_title, file_name, flag):
             if word[0] not in name and not name_is_set:
                 key = word[0] # name of who's speaking
                 name[key] = [] # preparing for the phrase(s) that will be spoken
-                if key not in ordered_character:
-                    ordered_character.append(key)
+                #if key not in ordered_character:
+                #    ordered_character.append(key)
                 name_is_set = True
                 ist = 1        
                 speech_line_spoken_by.append((key,num_line))
@@ -54,8 +56,8 @@ def split(unit, dialogue, page, dialogue_title, file_name, flag):
             elif word[0] in name:
                 name_is_set = True                    
                 key = word[0]
-                if key not in ordered_character:
-                    ordered_character.append(key)
+                #if key not in ordered_character:
+                #    ordered_character.append(key)
                 ist = 1
                 speech_line_spoken_by.append((key,num_line))
             # There is no name in the first word    
@@ -130,7 +132,8 @@ def split(unit, dialogue, page, dialogue_title, file_name, flag):
         logging.debug('Writing XML file')
         out_file = path + u'u' + str(unit) + u'_dialogue_' + dialogue + '.xml'
         logging.debug('XML file: %s', out_file)
-        writeXml.writeXml(unit, dialogue_title, page, new_audio_file, ordered_character, text_to_print, out_file)
+        #writeXml.writeXml(unit, dialogue_title, page, new_audio_file, ordered_character, text_to_print, out_file)
+        writeXml.writeXml(unit, dialogue_title, page, new_audio_file, name.keys(), text_to_print, out_file)
 
 
 if __name__ == '__main__':
