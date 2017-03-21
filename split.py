@@ -23,7 +23,13 @@ def split(unit, dialogue, page, dialogue_title, file_name, flag):
     out_file = path + u'u' + str(unit) + u'_dialogue_' + dialogue + u'_mysplit.txt'
     file_mode = u'w'
     fout = io.open(out_file,encoding='utf-8', mode=file_mode)
-    fout.write(dialogue_title+'\n')
+    print dialogue
+    if dialogue == '1':
+        long_title = u'Unité ' + str(unit) + ' ' + dialogue_title
+        fout.write(long_title+'\n')
+    else:
+        short_title = u'Unité ' + str(unit) + ' dialogue 2'
+        fout.write(short_title+'\n')
 
     name_is_set = False
     num_line = 2
