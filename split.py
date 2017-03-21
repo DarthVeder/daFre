@@ -73,7 +73,7 @@ def split(unit, dialogue, page, dialogue_title, file_name, flag):
                 num_line = num_line + 1
                 speech_text.append(phrase.strip('\n'))
             else:            
-                ck = re.split('(?<=[.,;?!:]) +',phrase.strip('\n'))
+                ck = re.split(r'(?<=[.,;?!:]) +',phrase.strip('\n'))
                 for c in ck:
                     fout.write(c+'\n')
                     num_line = num_line + 1
