@@ -1,6 +1,6 @@
 # Possible stuff to add:
 
-+ split of phrase based on a certain vocabulary. In Franch, for example, one could split with 'et' and 'avec'.
++ ~~split of phrase based on a certain vocabulary. In Franch, for example, one could split with 'et' and 'avec'.~~
 + change the input list.txt: probably a list will be more useful, than a complex string with the two titles
 + flag to allow the merge between timing and speech without running aenaes
 + adding mp3 real duration at the end of the xml cue tag
