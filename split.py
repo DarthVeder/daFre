@@ -30,6 +30,7 @@ def split(unit, dialogue, page, dialogue_title, file_name, flag):
     # Differentiaiting between title of first dialogue, and title of second dialogue
     if dialogue == '1':
         long_title = u'Unité ' + str(unit) + ' ' + dialogue_title
+        print dialogue_title
         fout.write(long_title+'\n')
     else:
         short_title = u'Unité ' + str(unit) + ' dialogue 2'
@@ -69,16 +70,20 @@ def split(unit, dialogue, page, dialogue_title, file_name, flag):
             name[key].append(phrase.strip('\n'))
             wd = phrase.split()        
             if len(wd) <= 2:
+                # By default 2 words are kept together
                 fout.write(phrase)
                 num_line = num_line + 1
                 speech_text.append(phrase.strip('\n'))
-            else:            
+            else:
+                # Building speech line by line, storing how many split per line per author
                 ck = re.split(r'(?<=[.,;?!:]) +',phrase.strip('\n'))
-                for c in ck:
-                    fout.write(c+'\n')
-                    num_line = num_line + 1
-                    speech_text.append(c.strip('\n'))
-            # Building speech line by line, storing how many split per line per author
+                for p in ck:
+                    cks = re.split(r' \b(?=\bet)+',p)
+                    for cksi in cks:
+                        fout.write(cksi+'\n')
+                        num_line = num_line + 1
+                        speech_text.append(cksi.strip('\n'))
+                
         else:
             name_is_set = False
 
