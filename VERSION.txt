@@ -1,0 +1,16 @@
+1.1 - 19.03.2017
+----------------
+
+* Characters stored as they appear in the speech
+
+
+1.0 - 19.03.2017
+----------------
+
+* Improved phrase splitting
+
+
+1.0 - 19.03.2017
+----------------
+
+* Initial Release
