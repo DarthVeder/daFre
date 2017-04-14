@@ -5,60 +5,61 @@ import io
 import logging
 import collections
 from subprocess import call
+from mutagen.mp3 import MP3 
 
-def split(unit, dialogue, page, dialogue_title, file_name, flag):
-    #name = {}
+def split(language, unit, page, dialogue_title, file_name, flag):
+    # Storing the ordered name of the characters
     name = collections.OrderedDict()
-    #ordered_character = []
+    # text spoken by each character (name, line_number)
     speech_text = ['null', 'null']
     speech_line_spoken_by = []
     path = file_name['dir']
     dialogue_file = file_name['oldtext']
     audio_file = file_name['oldaudio']
     new_audio_file = file_name['newaudio']
+    base_file_name = file_name['file']
     
     logging.info('Splitting required')
     logging.info('Dialogue File: %s', dialogue_file)
     # input text
-    logging.debug('Path: %s; dialogue file: %s',path,dialogue_file)        
-    fin = io.open(path+dialogue_file, encoding='utf-8', mode='r')
-    # Splitting all the text for align with the audio
-    out_file = path + u'u' + str(unit) + u'_dialogue_' + dialogue + u'_mysplit.txt'
+    logging.debug('Path: %s; dialogue file: %s',path,dialogue_file)
+    # input text file with required base splitting
+    fin = io.open(path + dialogue_file, encoding='utf-8', mode='r')
+    # output file with new splitting based on dictionary, base splitting
+    # and !?,;:.
+    out_file = path + base_file_name + '_mysplit.txt'
     file_mode = u'w'
     fout = io.open(out_file,encoding='utf-8', mode=file_mode)
-    
-    # Differentiaiting between title of first dialogue, and title of second dialogue
-    if dialogue == '1':
-        long_title = u'Unité ' + str(unit) + ' ' + dialogue_title
-        print dialogue_title
-        fout.write(long_title+'\n')
-    else:
-        short_title = u'Unité ' + str(unit) + ' dialogue 2'
-        fout.write(short_title+'\n')
 
+    # Variable used to check if the character name has been found and stored
     name_is_set = False
-    num_line = 2
-    iid = 0
+    num_line = 2 # this variable stores each line number in the
+                 # fout file
+    # Flag used to identify the first line of the fin file reserved
+    # to the title
+    set_mp3_title = False
     for l in fin:
-        if l != '\n':        
+        if not set_mp3_title:
+            if l != '\n': # if title not a blank line
+                dialogue_title = l.strip('\n')
+                # writing dialogue title to file for mp3 synchronization   
+                fout.write(dialogue_title + '\n')                
+            set_mp3_title = True
+        elif l != '\n':
             word = l.split(' ')        
             ist = 0        
-            # firt word of the line is not a key and the name of who's talking
+            # first word of the line is not a key and the name of who's talking
             # is not set
             if word[0] not in name and not name_is_set:
-                key = word[0] # name of who's speaking
-                name[key] = [] # preparing for the phrase(s) that will be spoken
-                #if key not in ordered_character:
-                #    ordered_character.append(key)
+                key = word[0].strip(':') # name of who's speaking
+                name[key] = [] # preparing for the phrase(s) that will be spoken                
                 name_is_set = True
                 ist = 1        
                 speech_line_spoken_by.append((key,num_line))
             # the first word is a name already present
             elif word[0] in name:
                 name_is_set = True                    
-                key = word[0]
-                #if key not in ordered_character:
-                #    ordered_character.append(key)
+                key = word[0].strip(':')                
                 ist = 1
                 speech_line_spoken_by.append((key,num_line))
             # There is no name in the first word    
@@ -92,70 +93,68 @@ def split(unit, dialogue, page, dialogue_title, file_name, flag):
     for k in name.keys():
         logging.debug('Charcter %s, type unicode %s', k, isinstance(k,unicode))
 
-    # forced alignment between audio and text. The splitting is inside "mysplit.txt"
-    if flag == 'all':    
-        logging.info('Synchronization required')
-        out_map = path + 'u'+ str(unit) + '_dialogue_' + dialogue + '_map.audm'
-        logging.debug('Map file: %s',out_map)
-        call('python -m aeneas.tools.execute_task '+path+audio_file+' '+out_file+ \
-             ' \"task_language=fr|os_task_file_format=audm|is_text_type=plain\" '+out_map)
+    # Finding duration (s) of audio file:    
+    audio = MP3(path+audio_file)
+    tend_s = audio.info.length # seconds
 
-        # preparing the structure with the timing        
-        fin = io.open(out_map, encoding='utf-8', mode='r')
+    # forced alignment between audio and text, if required. The splitting is inside "mysplit.txt"    
+    out_map = path + base_file_name + '_map.txt'
+    logging.debug('Map file: %s',out_map)
+    if flag != 'nosync':
+        logging.info('Synchronization required')        
+        call('python -m aeneas.tools.execute_task ' + path + audio_file + ' ' + out_file \
+             + ' \"task_language=' + language \
+             + '|os_task_file_format=audm|is_text_type=plain\" ' + out_map)
 
-        # parsing the time map
-        t_start = []
-        # first line is gnored, since it is the title of the dialogue
-        fin.readline()
-        for l in fin:
-            t_start.append(l.split('\t')[0])
+    # preparing the structure with the timing        
+    fin = io.open(out_map, encoding='utf-8', mode='r')
 
-        # Binding time to speaker
-        text_to_print = []
-        #for i in speech_line_spoken_by:
-        #    print(i[1])
-        logging.debug('EXCHANGE START')        
-        for i in range(len(speech_line_spoken_by) ):
-            ch = speech_line_spoken_by[i][0]
-            idx = speech_line_spoken_by[i][1]
-            logging.debug('Speaker: %s',ch)
-            if i != len(speech_line_spoken_by) - 1:
-                idx1 = speech_line_spoken_by[i+1][1]
-            else:
-                idx1 = len(speech_text)
-            text = [ t_start[idx-2:idx1-2] , speech_text[idx:idx1] ]            
-            #for j in text:
-            #    print(j)
-            text_to_print.append([ch] + text)
+    # parsing the time map
+    t_start = []
+    # first line is gnored, since it is the title of the dialogue
+    fin.readline()
+    for l in fin:
+        t_start.append(l.split('\t')[0])
 
-        logging.debug('EXCHANGE STOP')
-        #for i in text_to_print:
-        #    print(i)
+    # Binding time to speaker
+    text_to_print = []    
+    logging.debug('EXCHANGE START')        
+    for i in range(len(speech_line_spoken_by) ):
+        ch = speech_line_spoken_by[i][0]
+        idx = speech_line_spoken_by[i][1]
+        logging.debug('Speaker: %s',ch)
+        if i != len(speech_line_spoken_by) - 1:
+            idx1 = speech_line_spoken_by[i+1][1]
+        else:
+            idx1 = len(speech_text)
+        text = [ t_start[idx-2:idx1-2] , speech_text[idx:idx1] ]            
+        text_to_print.append([ch] + text)
+
+    logging.debug('EXCHANGE STOP')
     
     # Writing xml file
-    if flag == 'xml' or flag == 'all':
-        logging.debug('Writing XML file')
-        out_file = path + u'u' + str(unit) + u'_dialogue_' + dialogue + '.xml'
-        logging.debug('XML file: %s', out_file)
-        #writeXml.writeXml(unit, dialogue_title, page, new_audio_file, ordered_character, text_to_print, out_file)
-        writeXml.writeXml(unit, dialogue_title, page, new_audio_file, name.keys(), text_to_print, out_file)
+    logging.debug('Writing XML file')   
+    out_file = path + base_file_name + '.xml'
+    logging.debug('XML file: %s', out_file)
+    writeXml.writeXml(language, unit, dialogue_title, page, new_audio_file, tend_s, \
+                      name.keys(), text_to_print, out_file)
 
 
 if __name__ == '__main__':
     unit = u'2'
     page = u'Page 28'
     dialogue_title = 'Tu es sportif, nest-ce pas? - Dialogue 1'
-
-    dialogue = u'1'
     dialogue_file = u'u2_dialogue_1.txt'
     old_audio_file = dialogue_file.replace('txt','mp3')
     new_audio_file = u'v1u2_echanges_p28.mp3'
+
     file_name = {}
     file_name['dir'] = u'.\\audio_karaoke_echanges\\'
     file_name['oldaudio'] = old_audio_file
     file_name['newaudio'] = new_audio_file
     file_name['oldtext'] = dialogue_file
+    file_name['file'] = 'karaoke_u1'
 
-    flag = 'all' # 'xml'
+    flag = 'sync' 
 
-    split(unit, dialogue, page, dialogue_title, file_name, flag)
+    split('fr', unit, page, dialogue_title, file_name, flag)

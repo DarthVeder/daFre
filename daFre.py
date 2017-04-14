@@ -1,21 +1,19 @@
+#-*- coding:  utf-8 -*-
 # daFre.py is a controlling script to generate e final xml for duDAT
 # karaoke.
-#-*- coding:  utf-8 -*-
 
 import shutil
 import split
 import io
+import os
 import logging
-
-# Book under forced alignement:
-volume_name = u'echanges'
+import ConfigParser
+import sys
+import glob
 
 # Task required:
-build_dirs = False
-copy_audio_files = False
 split_text = True
-flag ='all'  #'all' 'xml'
-
+flag ='sync'  #sync to force align with aeneas. Any other value to force align
 
 # logging.INFO WARNING ERROR CRITICAL
 def mainLogging():
@@ -23,82 +21,123 @@ def mainLogging():
                         format='%(levelname)s %(module)s: %(message)s', \
                         level = logging.DEBUG)    
 
-def readUnits(unit):
-    fin = io.open('list.txt', encoding='utf-8', mode='r')
-    u = 1
-    for l in fin:        
-        if l.find('DEMO') == -1 and l.find('DONE') == -1:
-            tmp = l.split('/')
-            title1 = tmp[0]
-            base = title1.split('-')[0]
-            other = tmp[1].split('p') 
-            title2 = base + other[0]
-            page1_num = int(other[1])
-            page1 = 'Page ' + str(page1_num)
-            page2_num = int(other[2])
-            page2 = 'Page ' + str(page2_num)
-            afile1 = 'v1u'+str(u)+'_'+volume_name+'_p'+str(page1_num)+'.mp3'
-            oafile1 = 'u'+str(u)+'_dialogue_1.mp3'
-            afile2 = 'v1u'+str(u)+'_'+volume_name+'_p'+str(page2_num)+'.mp3'
-            oafile2 = 'u'+str(u)+'_dialogue_2.mp3'
+def parse(rel_file_name):
+    """
+    Configuration file parser
+    """
+    dict1 = {}
+    config = ConfigParser.ConfigParser()
+    config.read(rel_file_name)
 
-            file_name1 = {}
-            file_name1['oldaudio'] = oafile1
-            file_name1['dir'] = '.\\audio_karaoke_echanges\\'
-            file_name1['newaudio'] = afile1
-            file_name1['oldtext'] = oafile1.replace('mp3','txt')
+    options = config.options('default')
+    for option in options:
+        dict1[option] = config.get('default',option)
 
-            file_name2 = {}
-            file_name2['oldaudio'] = oafile2
-            file_name2['dir'] = '.\\audio_karaoke_echanges\\'
-            file_name2['newaudio'] = afile2
-            file_name2['oldtext'] = oafile2.replace('mp3','txt')
+    # Check that the directory entries end with a slash:
+    if not dict1['source_directory'].endswith('\\'):
+        sys.exit('Check end slash in source_directory')
 
-            # Storing for unit u both title and audio files (relative file names) and relative pages
-            logging.info('Storing unit %s', u)
-            unit[u] = (title1,title2,file_name1,file_name2,page1,page2)
-        else:
-            logging.info('Dropping unit %s', u)
-            
-        u = u + 1
+    if not dict1['destination_directory'].endswith('\\'):
+        sys.exit('Check end slash in destination_directory')
 
-if __name__ == '__main__':
-    mainLogging()
-    # reading required units
-    unit = {}
-    readUnits(unit)
+    return dict1
+
+def readUnits(config):
+    """
+    Input file must be in the following form:
+    u#_word_p#.mp3
+
+    u5_ancient_marinar.mp3
+    u5
+    ancient
+    marinar
+    p192
+    (.)
+    mp3
+
+    NB: the audio title spoken in the mp3 BEFORE the start of any dialogue,
+    MUST be put in the first line of unit_dialogue.txt
+    """
+    logging.debug('source_directory=%s',config['source_directory'])
+    entries = {}    
+    fin = glob.glob(config['source_directory']+u'*.mp3')
+    logging.debug('len(fin)=%s',len(fin))
+    e = 1
+    for l in fin:
+        if l.find(';;') == -1:
+            source_base_file_name = l.split('\\')[-1]
+            tmp = source_base_file_name.split('.')[0].split('_')            
+            volume = config['volume_number']
+            unit = tmp[0][1]
+            title_mp3 = ' '.join( tmp[2:-1] )                        
+            page_num = int(tmp[-1].replace('p',''))
+            page_txt = 'Page ' + str(page_num)
     
-    for u in unit.keys():
-        title1,title2,file_name1,file_name2,page1,page2 = unit[u]        
+            # new audio file name
+            afile = 'v' + volume + 'u' + unit + '_' + config['volume_name'] \
+                        + '_p' + str(page_num) + '.mp3'
+            unit_number = 'u' + unit            
+            oafile = source_base_file_name           
+            
+            file_name = {}
+            file_name['oldaudio'] = oafile
+            file_name['dir'] = config['source_directory']
+            file_name['newaudio'] = afile
+            file_name['oldtext'] = oafile.replace('mp3','txt')
+            file_name['file'] = oafile[:oafile.rfind('.')]
+
+            # Storing entry
+            logging.info('Storing entry %s', e)
+            logging.debug('Base file name: %s', file_name['file'])
+            entries[e] = (title_mp3,file_name,page_txt,unit)
+        else:
+            logging.info('Dropping entry %s', e)
+            
+        e = e + 1
+        
+    return entries
+
+if __name__ == '__main__':    
+    mainLogging()
+    logging.info('Starting...')
+    # reading config.ini file
+    logging.info('Parsing config file...')
+    config = parse('config.ini')
+    language = config['language']
+    logging.info('Done')
+    
+    # reading required entries
+    logging.info('Reading mp3 files to process...')
+    config_file = 'config.ini'
+    entries = {}
+    entries = readUnits(config)
+    logging.info('Done')
+
+    logging.info('Examining each entry...')
+    for e in entries.keys():
+        logging.debug('Entry %s',e)
+        title,file_name,page,unit = entries[e]        
         
         # destination folder names
-        destination_dir = []
-        destination_dir.append(file_name1['newaudio'].split('.')[0])
-        destination_dir.append(file_name2['newaudio'].split('.')[0])
+        destination_dir = file_name['newaudio'].split('.')[0]
+        logging.debug('desitnation_dir=%s',destination_dir)
         
-        # preparing destination directory if required        
-        if build_dirs:            
-            shutil.copytree('template\www',destination_dir[0])
-            shutil.copytree('template\www',destination_dir[1])
-
-        # copying original mp3 to new destination with new name, if flag is active
-        if copy_audio_files:
-            for i in range(1,3):
-                file_name = unit[u][i+1]
-                oafile = file_name['oldaudio']
-                afile = file_name['newaudio']
-                file_to_move = '.\\audio_karaoke_echanges\\'+oafile
-                file_new_name =  '.\\' + destination_dir[i-1] + "\\mp3\\" + afile
-            
-                logging.debug('Audio file to move: %s into %s',file_to_move, file_new_name)
-                shutil.copyfile(file_to_move, file_new_name)
-        #print(page1, title1, file_name1, file_name2)
+        # preparing destination directory if required                
+        if not os.path.isdir(destination_dir):
+            shutil.copytree('template\www',destination_dir)            
+            # copying original mp3 to new destination with new name, if flag is active        
+            oafile = file_name['oldaudio']
+            afile = file_name['newaudio']
+            file_to_move = config['source_directory'] + oafile
+            file_new_name =  '.\\' + destination_dir + "\\mp3\\" + afile            
+            logging.debug('Audio file to move: %s into %s',file_to_move, file_new_name)
+            shutil.copyfile(file_to_move, file_new_name)        
 
         # building label file
         if split_text:
-            logging.info('processing Unit %s', u)
-            split.split(u, '1', page1, title1, file_name1, flag)
-            split.split(u, '2', page2, title2, file_name2, flag)
+            logging.info('processing Unit %s', unit)
+            split.split(language, unit, page, title, file_name, flag)
+    logging.info('Done')
 
             
 

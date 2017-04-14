@@ -4,14 +4,16 @@ import string
 from lxml import etree as ET
 import logging
 
+unit_text = { 'fr': u'Unité ', 'en': u'Unit '}
+character_text = { 'fr': u'Teller', 'en': u'Speaker' }
 character_id = string.lowercase[:26]
 
-def writeXml(unit, dialogue_title, page, audio_file, character, text_to_print, out_file):
+def writeXml(language, unit, dialogue_title, page, audio_file, tend, character, text_to_print, out_file):
     name_to_id = {}
     root = ET.Element('karaoke_config')
     b = ET.SubElement(root, 'book_info')
-    u = ET.SubElement(b, 'unit')
-    u.text = u'Unité ' + str(unit)
+    u = ET.SubElement(b, 'unit')    
+    u.text = unit_text[language] + str(unit)
     p = ET.SubElement(b, 'page')
     p.text = page
     t = ET.SubElement(b, 'title')
@@ -21,11 +23,11 @@ def writeXml(unit, dialogue_title, page, audio_file, character, text_to_print, o
     a = ET.SubElement(k, 'audio')
     a.text = audio_file
     l = ET.SubElement(k, 'lang')
-    l.text = 'fr'
+    l.text = language
 
     c = ET.SubElement(k, 'characters')
 
-    if 'Teller' not in character:        
+    if character_text[language] not in character:        
         c1 = ET.SubElement(c, 'character')
         c1.attrib['id'] = 'teller'
         c1.attrib['visible'] = 'false'
@@ -34,7 +36,7 @@ def writeXml(unit, dialogue_title, page, audio_file, character, text_to_print, o
     for ch in character:
         c1 = ET.SubElement(c, 'character')        
         c1.attrib['id'] = character_id[idx]
-        if ch == 'Teller':
+        if ch == character_text[language]:
             c1.attrib['visible'] = 'true'            
         name_to_id[ch] = character_id[idx]        
         c1.text = ch
@@ -42,21 +44,17 @@ def writeXml(unit, dialogue_title, page, audio_file, character, text_to_print, o
 
     s = ET.SubElement(k, 'subtitles')
     
-    tend = -1.0
     for i in range(0,len(text_to_print)):
         lr = ET.SubElement(s, 'line')
         lr.attrib['ref'] = name_to_id[text_to_print[i][0]]
         time = text_to_print[i][1][:]
         phrase = text_to_print[i][2][:]
         for j in range(0,len(time)):            
-            tmp = float(time[j])
-            if tmp > tend:
-                tend = tmp
+            tmp = float(time[j])            
             time_string = ' %.6f ' % tmp
             cue = ET.SubElement(lr, 'cue')
             cue.attrib['start'] = time_string            
-            cue.text = phrase[j]
-    tend = tend + 5.0
+            cue.text = phrase[j]    
 
     cue = ET.SubElement(s, 'cue')
     cue.attrib['start'] = '%.6f' % tend
@@ -76,4 +74,4 @@ if __name__ == '__main__':
     text_to_print.append(['Nathan', ['8.800'], ['Salut Abdou!']])
     text_to_print.append(['Abdou',  ['10.160', '11.120'], ['Salut Nathan!', '\xc3\x87a va?']])
     
-    writeXml(unit, dialogue_title, page, audio_file, character, text_to_print, out_file)
+    writeXml('fr', unit, dialogue_title, page, audio_file, character, text_to_print, out_file)
