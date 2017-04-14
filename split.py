@@ -91,7 +91,7 @@ def split(language, unit, page, dialogue_title, file_name, flag):
     fin.close()
     fout.close()
     for k in name.keys():
-        logging.debug('Charcter %s, type unicode %s', k, isinstance(k,unicode))
+        logging.debug('Character %s, type unicode %s', k, isinstance(k,unicode))
 
     # Finding duration (s) of audio file:    
     audio = MP3(path+audio_file)
