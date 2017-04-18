@@ -1,3 +1,11 @@
+2.0 - 18.04.2017
+----------------
+
+* Added config.ini
+* Added command string for calling system commands
+* Added basic dictionary for xml printing
+
+
 1.1 - 19.03.2017
 ----------------
 
