@@ -1,5 +1,6 @@
+#!/usr/bin/env python
 #-*- coding:  utf-8 -*-
-# daFre.py is a controlling script to generate e final xml for duDAT
+# daFre.py is a controlling script to generate a final xml for duDAT
 # karaoke.
 
 import shutil
@@ -34,10 +35,10 @@ def parse(rel_file_name):
         dict1[option] = config.get('default',option)
 
     # Check that the directory entries end with a slash:
-    if not dict1['source_directory'].endswith('\\'):
+    if not dict1['source_directory'].endswith('/'):
         sys.exit('Check end slash in source_directory')
 
-    if not dict1['destination_directory'].endswith('\\'):
+    if not dict1['destination_directory'].endswith('/'):
         sys.exit('Check end slash in destination_directory')
 
     return dict1
@@ -65,7 +66,7 @@ def readUnits(config):
     e = 1
     for l in fin:
         if l.find(';;') == -1:
-            source_base_file_name = l.split('\\')[-1]
+            source_base_file_name = l.split('/')[-1]
             tmp = source_base_file_name.split('.')[0].split('_')            
             volume = config['volume_number']
             unit = tmp[0][1]
@@ -124,12 +125,12 @@ if __name__ == '__main__':
         
         # preparing destination directory if required                
         if not os.path.isdir(destination_dir):
-            shutil.copytree('template\www',destination_dir)            
+            shutil.copytree('template/www',destination_dir)            
             # copying original mp3 to new destination with new name, if flag is active        
             oafile = file_name['oldaudio']
             afile = file_name['newaudio']
             file_to_move = config['source_directory'] + oafile
-            file_new_name =  '.\\' + destination_dir + "\\mp3\\" + afile            
+            file_new_name =  './' + destination_dir + "/mp3/" + afile            
             logging.debug('Audio file to move: %s into %s',file_to_move, file_new_name)
             shutil.copyfile(file_to_move, file_new_name)        
 

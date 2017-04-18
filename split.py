@@ -102,12 +102,13 @@ def split(language, unit, page, dialogue_title, file_name, flag):
     logging.debug('Map file: %s',out_map)
     if flag != 'nosync':
         logging.info('Synchronization required')
-        command = u'python -m aeneas.tools.execute_task ' \
-                  + path + audio_file + ' ' + out_file \
+        command =   u'python -m aeneas.tools.execute_task ' \
+                  + path + audio_file + u' ' + out_file \
                   + u' \"task_language=' + language \
                   + u'|os_task_file_format=audm|is_text_type=plain\" ' \
                   + out_map
-        call(command)
+        os.system(command)
+>>>>>>> Stashed changes
         logging.debug('Aeneas command: %s',command)
 
     # preparing the structure with the timing        

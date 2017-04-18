@@ -4,8 +4,8 @@ import string
 from lxml import etree as ET
 import logging
 
-unit_text = { 'fr': u'Unité ', 'en': u'Unit '}
-character_text = { 'fr': u'Teller', 'en': u'Speaker' }
+unit_text = { 'fra': u'Unité ', 'eng': u'Unit '}
+character_text = { 'fra': u'Teller', 'eng': u'Speaker' }
 character_id = string.lowercase[:26]
 
 def writeXml(language, unit, dialogue_title, page, audio_file, tend, character, text_to_print, out_file):
