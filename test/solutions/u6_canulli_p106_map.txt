@@ -1,0 +1,75 @@
+0.000	6.040	Unité 6 Rythme quotidien
+6.040	6.760	Éva,
+6.760	8.960	tu n’es pas encore debout!
+8.960	10.120	Ce n’est pas possible!
+10.120	10.120	
+10.120	11.160	Tous les matins,
+11.160	13.800	c’est la même histoire!
+13.800	14.160	Oh,
+14.160	14.800	maman,
+14.800	16.520	j’ai encore sommeil!
+16.520	17.200	Mais enfin,
+17.200	18.440	il est déjà sept heures
+18.440	19.000	et demie!
+19.000	20.240	Dépêche-toi!
+20.240	20.640	Bon,
+20.640	21.320	ça va,
+21.320	23.280	ça va… J’arrive!
+23.280	24.640	Mange quelque chose!
+24.640	25.680	Je n’ai pas le temps!
+25.680	28.240	Salut!
+28.240	30.040	En classe
+30.040	30.720	Salut!
+30.720	33.200	Quelle tête ce matin!
+33.200	34.440	Tu parles!
+34.440	35.720	C’est l’horreur!
+35.720	36.680	Je suis toujours
+36.680	37.640	en retard.
+37.640	38.080	Je m’habille
+38.080	40.040	en vitesse pendant que ma mère crie
+40.040	41.120	et puis je me précipite
+41.120	42.080	à la station de métro!
+42.080	43.560	Tu ne prends pas
+43.560	44.840	de petit déjeuner?
+44.840	45.200	Si,
+45.200	47.320	deux fois par semaine… Le samedi
+47.320	48.040	et le dimanche!
+48.040	49.200	Arrête!
+49.200	51.000	Tu exagères!
+51.000	51.720	Moi,
+51.720	53.280	je ne sors jamais
+53.280	54.680	sans petit déj.
+54.680	56.800	Je déteste me dépêcher
+56.800	57.760	le matin.
+57.760	58.640	En général,
+58.640	60.360	je me lève vers sept heures
+60.360	61.760	moins le quart.
+61.760	62.720	Ma chambre est devant
+62.720	63.640	la cuisine
+63.640	65.800	et c’est le parfum du pain grillé
+65.800	69.560	qui me réveille… Ma mère prépare le petit déjeuner
+69.560	71.160	pour toute la famille.
+71.160	72.000	Ensuite,
+72.000	73.200	je me lave…
+73.200	74.080	Et c’est là que
+74.080	75.400	les disputes commencent…
+75.400	76.040	Pourquoi?
+76.040	78.440	Parce que nous avons une seule
+78.440	79.320	salle de bains
+79.320	80.680	et tout le monde
+80.680	82.640	en a besoin le matin!
+82.640	84.080	Nous avons déménagé
+84.080	85.920	il y a un an quand ma sœur est
+85.920	87.840	allée vivre en Angleterre.
+87.840	87.840	
+87.840	89.520	Notre nouvel appartement
+89.520	90.400	est assez petit…
+90.400	92.440	Pas de soucis
+92.440	94.040	de ce côté-là chez moi!
+94.040	95.080	Chaque chambre a sa salle
+95.080	96.480	de bains mais mon
+96.480	97.840	ancienne maison me manque!
+97.840	99.120	Pourquoi?
+99.120	100.760	Parce que je n’ai pas
+100.760	102.360	de jardin donc,
+102.360	108.040	pas de piscine!

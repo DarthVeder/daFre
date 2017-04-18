@@ -1,0 +1,129 @@
+<karaoke_config>
+  <book_info>
+    <unit>Unité 6</unit>
+    <page>Page 106</page>
+    <title>Unité 6 Rythme quotidien</title>
+  </book_info>
+  <karaoke>
+    <audio>v1u6_canulli_p106.mp3</audio>
+    <lang>fra</lang>
+    <characters>
+      <character id="a">LaMamanD’Éva</character>
+      <character id="b">Éva</character>
+      <character id="c">LaMaman</character>
+      <character id="d" visible="true">Teller</character>
+      <character id="e">Kim</character>
+    </characters>
+    <subtitles>
+      <line ref="a">
+        <cue start=" 6.040000 ">Éva,</cue>
+        <cue start=" 6.760000 ">tu n’es pas encore debout!</cue>
+        <cue start=" 8.960000 ">Ce n’est pas possible!</cue>
+        <cue start=" 10.120000 "></cue>
+        <cue start=" 10.120000 ">Tous les matins,</cue>
+        <cue start=" 11.160000 ">c’est la même histoire!</cue>
+      </line>
+      <line ref="b">
+        <cue start=" 13.800000 ">Oh,</cue>
+        <cue start=" 14.160000 ">maman,</cue>
+        <cue start=" 14.800000 ">j’ai encore sommeil!</cue>
+      </line>
+      <line ref="c">
+        <cue start=" 16.520000 ">Mais enfin,</cue>
+        <cue start=" 17.200000 ">il est déjà sept heures</cue>
+        <cue start=" 18.440000 ">et demie!</cue>
+        <cue start=" 19.000000 ">Dépêche-toi!</cue>
+      </line>
+      <line ref="b">
+        <cue start=" 20.240000 ">Bon,</cue>
+        <cue start=" 20.640000 ">ça va,</cue>
+        <cue start=" 21.320000 ">ça va… J’arrive!</cue>
+      </line>
+      <line ref="c">
+        <cue start=" 23.280000 ">Mange quelque chose!</cue>
+      </line>
+      <line ref="b">
+        <cue start=" 24.640000 ">Je n’ai pas le temps!</cue>
+        <cue start=" 25.680000 ">Salut!</cue>
+      </line>
+      <line ref="d">
+        <cue start=" 28.240000 ">En classe</cue>
+      </line>
+      <line ref="e">
+        <cue start=" 30.040000 ">Salut!</cue>
+        <cue start=" 30.720000 ">Quelle tête ce matin!</cue>
+      </line>
+      <line ref="b">
+        <cue start=" 33.200000 ">Tu parles!</cue>
+        <cue start=" 34.440000 ">C’est l’horreur!</cue>
+        <cue start=" 35.720000 ">Je suis toujours </cue>
+        <cue start=" 36.680000 ">en retard.</cue>
+        <cue start=" 37.640000 ">Je m’habille </cue>
+        <cue start=" 38.080000 ">en vitesse pendant que ma mère crie</cue>
+        <cue start=" 40.040000 ">et puis je me précipite </cue>
+        <cue start=" 41.120000 ">à la station de métro!</cue>
+      </line>
+      <line ref="e">
+        <cue start=" 42.080000 ">Tu ne prends pas </cue>
+        <cue start=" 43.560000 ">de petit déjeuner?</cue>
+      </line>
+      <line ref="b">
+        <cue start=" 44.840000 ">Si,</cue>
+        <cue start=" 45.200000 ">deux fois par semaine… Le samedi</cue>
+        <cue start=" 47.320000 ">et le dimanche!</cue>
+      </line>
+      <line ref="e">
+        <cue start=" 48.040000 ">Arrête!</cue>
+        <cue start=" 49.200000 ">Tu exagères!</cue>
+        <cue start=" 51.000000 ">Moi,</cue>
+        <cue start=" 51.720000 ">je ne sors jamais </cue>
+        <cue start=" 53.280000 ">sans petit déj.</cue>
+        <cue start=" 54.680000 ">Je déteste me dépêcher </cue>
+        <cue start=" 56.800000 ">le matin.</cue>
+        <cue start=" 57.760000 ">En général,</cue>
+        <cue start=" 58.640000 ">je me lève vers sept heures</cue>
+        <cue start=" 60.360000 ">moins le quart.</cue>
+        <cue start=" 61.760000 ">Ma chambre est devant </cue>
+        <cue start=" 62.720000 ">la cuisine</cue>
+        <cue start=" 63.640000 ">et c’est le parfum du pain grillé </cue>
+        <cue start=" 65.800000 ">qui me réveille… Ma mère prépare le petit déjeuner</cue>
+        <cue start=" 69.560000 ">pour toute la famille.</cue>
+        <cue start=" 71.160000 ">Ensuite,</cue>
+        <cue start=" 72.000000 ">je me lave…</cue>
+        <cue start=" 73.200000 ">Et c’est là que </cue>
+        <cue start=" 74.080000 ">les disputes commencent…</cue>
+      </line>
+      <line ref="b">
+        <cue start=" 75.400000 ">Pourquoi?</cue>
+      </line>
+      <line ref="e">
+        <cue start=" 76.040000 ">Parce que nous avons une seule </cue>
+        <cue start=" 78.440000 ">salle de bains</cue>
+        <cue start=" 79.320000 ">et tout le monde </cue>
+        <cue start=" 80.680000 ">en a besoin le matin!</cue>
+        <cue start=" 82.640000 ">Nous avons déménagé </cue>
+        <cue start=" 84.080000 ">il y a un an quand ma sœur est </cue>
+        <cue start=" 85.920000 ">allée vivre en Angleterre.</cue>
+        <cue start=" 87.840000 "></cue>
+        <cue start=" 87.840000 ">Notre nouvel appartement </cue>
+        <cue start=" 89.520000 ">est assez petit…</cue>
+      </line>
+      <line ref="b">
+        <cue start=" 90.400000 ">Pas de soucis </cue>
+        <cue start=" 92.440000 ">de ce côté-là chez moi!</cue>
+        <cue start=" 94.040000 ">Chaque chambre a sa salle </cue>
+        <cue start=" 95.080000 ">de bains mais mon</cue>
+        <cue start=" 96.480000 ">ancienne maison me manque!</cue>
+      </line>
+      <line ref="e">
+        <cue start=" 97.840000 ">Pourquoi?</cue>
+      </line>
+      <line ref="b">
+        <cue start=" 99.120000 ">Parce que je n’ai pas </cue>
+        <cue start=" 100.760000 ">de jardin donc,</cue>
+        <cue start=" 102.360000 ">pas de piscine!</cue>
+      </line>
+      <cue start="107.820562"/>
+    </subtitles>
+  </karaoke>
+</karaoke_config>

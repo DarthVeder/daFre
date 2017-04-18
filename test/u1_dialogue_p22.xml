@@ -1,0 +1,40 @@
+<karaoke_config>
+  <book_info>
+    <unit>Unité 1</unit>
+    <page>Page 22</page>
+    <title>Unité 1 Un nouveau camarade Dialogue 1 </title>
+  </book_info>
+  <karaoke>
+    <audio>v1u1_echanges_p22.mp3</audio>
+    <lang>fr</lang>
+    <characters>
+      <character id="teller" visible="false"/>
+      <character id="a">Bonjour</character>
+    </characters>
+    <subtitles>
+      <line ref="a">
+        <cue start=" 9.840000 ">à tous!</cue>
+        <cue start=" 12.160000 ">Bonjour monsieur!</cue>
+        <cue start=" 15.000000 ">Voilà un nouveau camarade...</cue>
+        <cue start=" 16.760000 ">Nathan,</cue>
+        <cue start=" 18.440000 ">tu te présentes à la classe?</cue>
+        <cue start=" 21.360000 ">Oui,</cue>
+        <cue start=" 22.560000 ">monsieur.</cue>
+        <cue start=" 24.240000 ">Je m’appelle Nathan </cue>
+        <cue start=" 26.920000 ">Rochat.</cue>
+        <cue start=" 28.640000 ">J’ai quinze ans.</cue>
+        <cue start=" 31.120000 ">Je suis suisse.</cue>
+        <cue start=" 33.320000 ">Tu viens de quelle ville?</cue>
+        <cue start=" 36.600000 ">Je viens de Lausanne.</cue>
+        <cue start=" 38.760000 ">Tu habites à Paris?</cue>
+        <cue start=" 42.000000 ">Oui,</cue>
+        <cue start=" 42.000000 ">ma mère travaille ici maintenant.</cue>
+        <cue start=" 42.000000 ">Très bien!</cue>
+        <cue start=" 42.000000 ">Bienvenue,</cue>
+        <cue start=" 42.000000 ">Nathan!</cue>
+        <cue start=" 42.000000 ">Merci monsieur!</cue>
+      </line>
+      <cue start="41.960625"/>
+    </subtitles>
+  </karaoke>
+</karaoke_config>

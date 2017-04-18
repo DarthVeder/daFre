@@ -1,0 +1,71 @@
+0.000	6.400	Unité 3 Univers perso
+6.400	7.520	Salut, Éva!
+7.520	8.560	Salut!
+8.560	9.280	Je te dérange?
+9.280	10.880	Pas du tout!
+10.880	11.680	Je suis en train
+11.680	12.800	de regarder les photos
+12.800	15.120	de l’anniversaire de mon frère...
+15.120	15.960	Regarde,
+15.960	17.200	c’est lui avec mes parents...
+17.200	19.480	Quelle jolie photo!
+19.480	20.680	Il a quel âge?
+20.680	21.480	Il vient d’avoir
+21.480	23.560	dix-sept ans.
+23.560	24.000	Et elles,
+24.000	25.160	qui est-ce?
+25.160	26.960	Tes sœurs?
+26.960	27.680	Non,
+27.680	29.240	je n’ai pas de sœurs,
+29.240	30.080	ce sont mes cousines
+30.080	31.200	avec mon chien,
+31.200	32.680	Lucky!
+32.680	33.120	Il a l’air
+33.120	33.640	très doux…
+33.640	34.480	Oui,
+34.480	35.280	il vit chez nous
+35.280	36.480	depuis deux ans.
+36.480	38.000	Il vient de la SPA
+38.000	38.640	Ah,
+38.640	40.000	voilà pourquoi il s’appelle «Lucky»,
+40.000	41.840	je suppose!
+41.840	43.640	Ton père est plutôt jeune...
+43.640	45.440	Tu lui ressembles beaucoup...
+45.440	45.800	Oui,
+45.800	46.640	je suis grande
+46.640	47.680	et blonde comme lui
+47.680	48.680	mais j’ai les yeux verts
+48.680	50.040	de ma mère.
+50.040	52.040	Tu t’entends bien avec tes parents?
+52.040	54.480	Ça dépend… Ma mère est patiente
+54.480	58.160	et généreuse mais elle est trop exigeante côté collège…
+58.160	60.080	Mon père est plus cool...
+60.080	60.080	
+60.080	60.680	Et chez toi,
+60.680	62.560	comment ça se passe?
+62.560	63.720	Mes parents sont divorcés.
+63.720	65.240	J’habite
+65.240	66.520	avec ma mère parce que
+66.520	68.000	mon père travaille souvent
+68.000	68.520	à l’étranger...
+68.520	70.600	Quelle est sa profession?
+70.600	72.160	Il est ingénieur.
+72.160	74.120	Ma mère est infrmière,
+74.120	75.360	elle n’a pas d’horaire fxe
+75.360	76.240	donc je suis souvent
+76.240	77.040	seul à la maison...
+77.040	78.440	Tu n’as pas de frères
+78.440	79.360	et sœurs?
+79.360	79.680	Si,
+79.680	81.120	j’ai une sœur
+81.120	83.200	mais elle a déjà vingtsept ans.
+83.200	83.200	
+83.200	84.320	Elle est mariée
+84.320	84.520	et elle
+84.520	86.680	va avoir un bébé le mois prochain!
+86.680	87.600	Super!
+87.600	88.880	Tu vas bientôt être tonton,
+88.880	89.800	alors!
+89.800	90.320	Arrête!
+90.320	91.280	Je prends
+91.280	96.560	ça très au sérieux!
