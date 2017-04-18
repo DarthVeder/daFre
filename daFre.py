@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 #-*- coding:  utf-8 -*-
-# daFre.py is a controlling script to generate a final xml for duDAT
-# karaoke.
+"""
+daFre.py is a controlling script to generate a final xml for duDAT
+karaoke.
+"""
 
 import shutil
 import split
@@ -12,7 +14,7 @@ import ConfigParser
 import sys
 import glob
 
-# Task required:
+# Flags not yet in config.ini required:
 split_text = True
 flag ='sync'  #sync to force align with aeneas. Any other value to force align
 
@@ -24,7 +26,10 @@ def mainLogging():
 
 def parse(rel_file_name):
     """
-    Configuration file parser
+    Configuration file parser.
+
+    In: relative path configuration file
+    Out: config dictionary
     """
     dict1 = {}
     config = ConfigParser.ConfigParser()
@@ -45,8 +50,11 @@ def parse(rel_file_name):
 
 def readUnits(config):
     """
+    Reads the files to process. The list of file is automatically generated looking for mp3s in the
+    source directory set in config file.
+    
     Input file must be in the following form:
-    u#_word_p#.mp3
+    u#_word_p#.mp3 (txt)
 
     u5_ancient_marinar.mp3
     u5
@@ -57,7 +65,11 @@ def readUnits(config):
     mp3
 
     NB: the audio title spoken in the mp3 BEFORE the start of any dialogue,
-    MUST be put in the first line of unit_dialogue.txt
+    MUST be put in the first line of the dialogue text. If no title is present, the line must be blank.
+    The first line in u#_word_p#.txt is reserved to title. word MUST NOT contain "_" or ".", use "-" instead.
+
+    Out: a dictionary with the following structure:
+    (title_mp3, file_name, page_txt, unit)
     """
     logging.debug('source_directory=%s',config['source_directory'])
     entries = {}    
@@ -65,27 +77,29 @@ def readUnits(config):
     logging.debug('len(fin)=%s',len(fin))
     e = 1
     for l in fin:
-        if l.find(';;') == -1:
+        if l.find(';;') == -1: # this if should be removed.
             source_base_file_name = l.split('/')[-1]
-            tmp = source_base_file_name.split('.')[0].split('_')            
-            volume = config['volume_number']
-            unit = tmp[0][1]
-            title_mp3 = ' '.join( tmp[2:-1] )                        
-            page_num = int(tmp[-1].replace('p',''))
-            page_txt = 'Page ' + str(page_num)
+            tmp                   = source_base_file_name.split('.')[0].split('_')            
+            volume                = config['volume_number']
+            unit                  = tmp[0][1]
+            title_mp3             = ' '.join( tmp[2:-1] )                        
+            page_num              = int(tmp[-1].replace('p',''))
+            page_txt              = 'Page ' + str(page_num)
     
             # new audio file name
-            afile = 'v' + volume + 'u' + unit + '_' + config['volume_name'] \
-                        + '_p' + str(page_num) + '.mp3'
+            afile       =   'v' + volume + 'u' + unit + '_' \
+                          + config['volume_name'] \
+                          + '_p' + str(page_num) + '.mp3'
             unit_number = 'u' + unit            
-            oafile = source_base_file_name           
-            
-            file_name = {}
+            oafile      = source_base_file_name           
+
+            # Storing the audio files, text file
+            file_name             = {}
             file_name['oldaudio'] = oafile
-            file_name['dir'] = config['source_directory']
+            file_name['dir']      = config['source_directory']
             file_name['newaudio'] = afile
-            file_name['oldtext'] = oafile.replace('mp3','txt')
-            file_name['file'] = oafile[:oafile.rfind('.')]
+            file_name['oldtext']  = oafile.replace('mp3','txt')
+            file_name['file']     = oafile[:oafile.rfind('.')]
 
             # Storing entry
             logging.info('Storing entry %s', e)
@@ -103,15 +117,15 @@ if __name__ == '__main__':
     logging.info('Starting...')
     # reading config.ini file
     logging.info('Parsing config file...')
-    config = parse('config.ini')
+    config   = parse('config.ini')
     language = config['language']
     logging.info('Done')
     
     # reading required entries
     logging.info('Reading mp3 files to process...')
     config_file = 'config.ini'
-    entries = {}
-    entries = readUnits(config)
+    entries     = {}
+    entries     = readUnits(config)
     logging.info('Done')
 
     logging.info('Examining each entry...')
@@ -127,9 +141,9 @@ if __name__ == '__main__':
         if not os.path.isdir(destination_dir):
             shutil.copytree('template/www',destination_dir)            
             # copying original mp3 to new destination with new name, if flag is active        
-            oafile = file_name['oldaudio']
-            afile = file_name['newaudio']
-            file_to_move = config['source_directory'] + oafile
+            oafile        = file_name['oldaudio']
+            afile         = file_name['newaudio']
+            file_to_move  = config['source_directory'] + oafile
             file_new_name =  './' + destination_dir + "/mp3/" + afile            
             logging.debug('Audio file to move: %s into %s',file_to_move, file_new_name)
             shutil.copyfile(file_to_move, file_new_name)        

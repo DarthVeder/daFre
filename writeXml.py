@@ -1,28 +1,29 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import string
 from lxml import etree as ET
 import logging
 
-unit_text = { 'fra': u'Unité ', 'eng': u'Unit '}
+unit_text      = { 'fra': u'Unité ', 'eng': u'Unit '}
 character_text = { 'fra': u'Teller', 'eng': u'Speaker' }
-character_id = string.lowercase[:26]
+character_id   = string.lowercase[:26]
 
 def writeXml(language, unit, dialogue_title, page, audio_file, tend, character, text_to_print, out_file):
     name_to_id = {}
-    root = ET.Element('karaoke_config')
-    b = ET.SubElement(root, 'book_info')
-    u = ET.SubElement(b, 'unit')    
-    u.text = unit_text[language] + str(unit)
-    p = ET.SubElement(b, 'page')
-    p.text = page
-    t = ET.SubElement(b, 'title')
-    t.text = dialogue_title
+    root       = ET.Element('karaoke_config')
+    b          = ET.SubElement(root, 'book_info')
+    u          = ET.SubElement(b, 'unit')    
+    u.text     = unit_text[language] + str(unit)
+    p          = ET.SubElement(b, 'page')
+    p.text     = page
+    t          = ET.SubElement(b, 'title')
+    t.text     = dialogue_title
     
-    k = ET.SubElement(root, 'karaoke')
-    a = ET.SubElement(k, 'audio')
+    k      = ET.SubElement(root, 'karaoke')
+    a      = ET.SubElement(k, 'audio')
     a.text = audio_file
-    l = ET.SubElement(k, 'lang')
+    l      = ET.SubElement(k, 'lang')
     l.text = language
 
     c = ET.SubElement(k, 'characters')
@@ -39,8 +40,8 @@ def writeXml(language, unit, dialogue_title, page, audio_file, tend, character, 
         if ch == character_text[language]:
             c1.attrib['visible'] = 'true'            
         name_to_id[ch] = character_id[idx]        
-        c1.text = ch
-        idx = idx + 1
+        c1.text        = ch
+        idx            = idx + 1
 
     s = ET.SubElement(k, 'subtitles')
     
@@ -50,11 +51,11 @@ def writeXml(language, unit, dialogue_title, page, audio_file, tend, character, 
         time = text_to_print[i][1][:]
         phrase = text_to_print[i][2][:]
         for j in range(0,len(time)):            
-            tmp = float(time[j])            
-            time_string = ' %.6f ' % tmp
-            cue = ET.SubElement(lr, 'cue')
+            tmp                 = float(time[j])            
+            time_string         = ' %.6f ' % tmp
+            cue                 = ET.SubElement(lr, 'cue')
             cue.attrib['start'] = time_string            
-            cue.text = phrase[j]    
+            cue.text            = phrase[j]    
 
     cue = ET.SubElement(s, 'cue')
     cue.attrib['start'] = '%.6f' % tend
