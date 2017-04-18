@@ -101,10 +101,14 @@ def split(language, unit, page, dialogue_title, file_name, flag):
     out_map = path + base_file_name + '_map.txt'
     logging.debug('Map file: %s',out_map)
     if flag != 'nosync':
-        logging.info('Synchronization required')        
-        call('python -m aeneas.tools.execute_task ' + path + audio_file + ' ' + out_file \
-             + ' \"task_language=' + language \
-             + '|os_task_file_format=audm|is_text_type=plain\" ' + out_map)
+        logging.info('Synchronization required')
+        command = u'python -m aeneas.tools.execute_task ' \
+                  + path + audio_file + ' ' + out_file \
+                  + u' \"task_language=' + language \
+                  + u'|os_task_file_format=audm|is_text_type=plain\" ' \
+                  + out_map
+        call(command)
+        logging.debug('Aeneas command: %s',command)
 
     # preparing the structure with the timing        
     fin = io.open(out_map, encoding='utf-8', mode='r')
