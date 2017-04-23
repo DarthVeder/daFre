@@ -52,14 +52,14 @@ def writeXml(language, unit, dialogue_title, page, audio_file, \
         lr.attrib['ref'] = name_to_id[text_to_print[i][0]]
         time = text_to_print[i][1][:]
         phrase = text_to_print[i][2][:]                
-
+        
         itime = 0
-        for j in range(0,len(phrase)):
+        for j in range(0,len(phrase)):            
             is_comment = False
             if phrase[j].find(r'\b') != -1:
                 is_comment = True                
                 
-            if not is_comment:
+            if not is_comment:                
                 tmp                 = float(time[itime])            
                 time_string         = ' %.6f ' % tmp
                 cue                 = ET.SubElement(lr, 'cue')

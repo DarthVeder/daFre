@@ -19,7 +19,7 @@ def split(language, unit, page, dialogue_title, file_name, flag):
     # Storing the ordered name of the characters
     character_name = collections.OrderedDict()
     # text spoken by each character (character_name, line_number)
-    speech_text_lines      = ['null', 'null']
+    speech_text_lines      = ['null']
     speech_line_spoken_by  = []
     path           = file_name['dir']
     dialogue_file  = file_name['oldtext']
