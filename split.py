@@ -19,7 +19,8 @@ def split(language, unit, page, dialogue_title, file_name, flag):
     # Storing the ordered name of the characters
     character_name = collections.OrderedDict()
     # text spoken by each character (character_name, line_number)
-    speech_text_lines      = ['null']
+    speech_text_lines      = [] 
+    to_print               = [] 
     speech_line_spoken_by  = []
     path           = file_name['dir']
     dialogue_file  = file_name['oldtext']
@@ -41,7 +42,7 @@ def split(language, unit, page, dialogue_title, file_name, flag):
 
     # Variable used to check if the character name has been found and stored
     character_name_is_set = False
-    num_line    = 2 # this variable stores each line number (starting from
+    num_line    = 0 # this variable stores each line number (starting from
                     # 1) in the
                     # fout file. The first line is reserved to the title,
                     # this is why num_line is 2
@@ -72,7 +73,7 @@ def split(language, unit, page, dialogue_title, file_name, flag):
                 character_name_is_set = True                    
                 key         = word[0].strip(':')                
                 ist         = 1
-                speech_line_spoken_by.append((key,num_line))                              
+                speech_line_spoken_by.append((key,num_line))                
             # There is no name in the first word    
             else:
                 ist = 0            
@@ -84,7 +85,8 @@ def split(language, unit, page, dialogue_title, file_name, flag):
             if len(wd) <= 2:
                 # By default 2 words are kept together
                 split_file.write(phrase)                
-                speech_text_lines.append(phrase.strip('\n '))                                
+                speech_text_lines.append(phrase.strip('\n '))
+                to_print.append(0)
             else:                
                 # Building speech line by line, storing how many split per line per author
                 ck = re.split(r'(?<=[.,;?!:]) +', phrase.strip('\n '))                
@@ -92,12 +94,14 @@ def split(language, unit, page, dialogue_title, file_name, flag):
                     cks = re.split(r' \b(?=\bet)+', p)                    
                     for cksi in cks:
                         split_file.write(cksi+'\n')                        
-                        speech_text_lines.append(cksi.strip('\n '))                        
+                        speech_text_lines.append(cksi.strip('\n '))
+                        to_print.append(0)
                         num_line = num_line + 1
         elif l.find(r'\b') != -1:            
             comment_text = l.strip('\n')
-            speech_text_lines.append(comment_text)            
-                
+            speech_text_lines.append(comment_text)
+            to_print.append(1)
+            num_line = num_line + 1    
         else:
             character_name_is_set = False
         
@@ -108,6 +112,9 @@ def split(language, unit, page, dialogue_title, file_name, flag):
     
     for k in character_name.keys():
         logging.debug('Character %s, type unicode %s', k, isinstance(k,unicode))
+
+    for i in range(len(speech_text_lines)):
+        logging.debug('%s %s %s', i, to_print[i], speech_text_lines[i])
 
     # Finding duration (s) of audio file:    
     audio = MP3(path+audio_file)
@@ -136,21 +143,40 @@ def split(language, unit, page, dialogue_title, file_name, flag):
     for l in fin:
         t_start.append(l.split('\t')[0])
 
+    logging.debug('Speech lines spoken by: %s', speech_line_spoken_by)
+    
+
     # Binding time to speaker
+    itime_start = 0
+    itime_end = 0
     text_to_print = []    
     logging.debug('EXCHANGE START')        
-    for i in range(len(speech_line_spoken_by) ):        
+    for i in range(len(speech_line_spoken_by) ):
         ch  = speech_line_spoken_by[i][0]
-        idx = speech_line_spoken_by[i][1]
-        logging.debug('Speaker: %s',ch)
+        idx = speech_line_spoken_by[i][1]        
+        logging.debug('Speaker: %s / Line %s', ch, idx)
         if i != len(speech_line_spoken_by) - 1:
             idx1 = speech_line_spoken_by[i+1][1]
         else:
-            idx1 = len(speech_text_lines)        
-        text = [ t_start[idx-2:idx1-2] , speech_text_lines[idx:idx1] ]            
+            idx1 = len(speech_text_lines)
+        
+        speech = []
+        for isp in range(idx, idx1):            
+            if to_print[isp] == 0:
+                speech.append(speech_text_lines[isp])
+                itime_end = itime_end + 1
+                
+        text = [ t_start[itime_start:itime_end] , speech ]
+
+        for il in range(len(text[0])):
+            logging.debug('%s -> %s', text[0][il], text[1][il])
+        
         text_to_print.append([ch] + text)
 
+        itime_start = itime_end
+
     logging.debug('EXCHANGE STOP')
+   
 
     # Writing xml file
     logging.debug('Writing XML file')   
