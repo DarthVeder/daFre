@@ -4,7 +4,8 @@
 + ~~ flag to allow the merge between timing and speech without running aenaes ~~
 + ~~ adding mp3 real duration at the end of the xml cue tag ~~
 + dictionary for specific languageas for splitting
-+ adding "\b text" for specific xml print tag
-+ teller must always hav tag "teller", not "a", "b", etc
-+ some white spaces present in myplit file!!
-+unit greater than 10 are not print correctly in file and folder names
++ ~~adding "\b text" for specific xml print tag~~
++ ~~teller must always hav tag "teller", not "a", "b", etc~~
++ ~~some white spaces present in myplit file!!~~
++ unit greater than 10 are not print correctly in file and folder names
++ ~~added text_type literature, for forcing spaces between speech text~~
