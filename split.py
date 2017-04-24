@@ -160,19 +160,21 @@ def split(language, unit, page, dialogue_title, file_name, flag):
         else:
             idx1 = len(speech_text_lines)
         
-        speech = []
+        #speech = []
         for isp in range(idx, idx1):            
             if to_print[isp] == 0:
-                speech.append(speech_text_lines[isp])
+   #             speech.append(speech_text_lines[isp])
                 itime_end = itime_end + 1
                 
-        text = [ t_start[itime_start:itime_end] , speech ]
+   #     text = [ t_start[itime_start:itime_end] , speech ]
+        text = [ t_start[itime_start:itime_end] , speech_text_lines[idx:idx1] ]
 
+        # print debug synchronization map
         for il in range(len(text[0])):
-            logging.debug('%s -> %s', text[0][il], text[1][il])
+            if speech_text_lines[il].find(r'\b') == -1:
+                logging.debug('%s -> %s', text[0][il], text[1][il])
         
         text_to_print.append([ch] + text)
-
         itime_start = itime_end
 
     logging.debug('EXCHANGE STOP')

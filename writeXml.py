@@ -47,8 +47,6 @@ def writeXml(language, unit, dialogue_title, page, audio_file, \
 
     s = ET.SubElement(k, 'subtitles')
 
-    print text_to_print
-
     for i in range(0,len(text_to_print)):        
         lr = ET.SubElement(s, 'line')
         lr.attrib['ref'] = name_to_id[text_to_print[i][0]]
@@ -58,7 +56,6 @@ def writeXml(language, unit, dialogue_title, page, audio_file, \
         itime = 0
         for j in range(0,len(phrase)):            
             is_comment = False
-            print phrase[j]
             if phrase[j].find(r'\b') != -1:
                 is_comment = True                
             
