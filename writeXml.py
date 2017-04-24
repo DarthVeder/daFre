@@ -39,10 +39,15 @@ def writeXml(language, unit, dialogue_title, page, audio_file, \
     idx = 0    
     for ch in character:
         c1 = ET.SubElement(c, 'character')        
-        c1.attrib['id'] = character_id[idx]
+        
         if ch == character_text[language]:
-            c1.attrib['visible'] = 'true'            
-        name_to_id[ch] = character_id[idx]        
+            c1.attrib['id'] = character_text[language]
+            c1.attrib['visible'] = 'true'
+            name_to_id[ch] = character_text[language]
+        else:
+            c1.attrib['id'] = character_id[idx]
+            name_to_id[ch] = character_id[idx]        
+
         c1.text        = ch
         idx            = idx + 1
 
