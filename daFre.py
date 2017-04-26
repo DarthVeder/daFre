@@ -151,7 +151,7 @@ if __name__ == '__main__':
             shutil.copyfile(file_to_move, file_new_name)        
 
         # building label file
-        if split_text:
+        if split_text:            
             logging.info('processing Unit %s', unit)
             split.split(language, unit, page, title, file_name, flag, \
                         config['use_dictionary'])
