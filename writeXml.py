@@ -9,7 +9,6 @@ unit_text      = { 'fra': u'Unité ', 'eng': u'Unit '}
 character_text = { 'fra': u'Teller', 'eng': u'Speaker' }
 character_id   = string.lowercase[:26]
 xml_language   = { 'fra' : u'fr', 'eng': u'en'}
-text_type = 'literature'
 
 def writeXml(language, unit, dialogue_title, page, audio_file, \
              tend, character, text_to_print, out_file):
@@ -70,11 +69,7 @@ def writeXml(language, unit, dialogue_title, page, audio_file, \
                 time_string         = ' %.6f ' % tmp
                 cue                 = ET.SubElement(lr, 'cue')
                 cue.attrib['start'] = time_string            
-                cue.text            = phrase[j]
-                if text_type == 'literature':
-                    cue      = ET.SubElement(lr, 'print_html')                
-                    cue.text = ET.CDATA(u'<br />') 
-                
+                cue.text            = phrase[j]                
                 itime = itime + 1
             elif is_comment:
                 comment_text = phrase[j].split(r'\b')[1]                

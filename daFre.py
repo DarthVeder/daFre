@@ -79,10 +79,11 @@ def readUnits(config):
     for l in fin:
         if l.find(';;') == -1: # this if should be removed.
             source_base_file_name = l.split('/')[-1]
-            tmp                   = source_base_file_name.split('.')[0].split('_')            
+            tmp                   = source_base_file_name.split('.')[0].split('_')
+            logging.debug('Source base file name: %s', tmp)
             volume                = config['volume_number']
             unit                  = tmp[0][1]
-            title_mp3             = ' '.join( tmp[2:-1] )                        
+            title_mp3             = ' '.join( tmp[2:-1] )
             page_num              = int(tmp[-1].replace('p',''))
             page_txt              = 'Page ' + str(page_num)
     
@@ -131,7 +132,8 @@ if __name__ == '__main__':
     logging.info('Examining each entry...')
     for e in entries.keys():
         logging.debug('Entry %s',e)
-        title,file_name,page,unit = entries[e]        
+        title,file_name,page,unit = entries[e]
+        logging.debug('title: %s', title)
         
         # destination folder names
         destination_dir = file_name['newaudio'].split('.')[0]
@@ -151,7 +153,8 @@ if __name__ == '__main__':
         # building label file
         if split_text:
             logging.info('processing Unit %s', unit)
-            split.split(language, unit, page, title, file_name, flag)
+            split.split(language, unit, page, title, file_name, flag, \
+                        config['use_dictionary'])
     logging.info('Done')
 
             

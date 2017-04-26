@@ -8,9 +8,27 @@ import io
 import logging
 import collections
 import os
-from mutagen.mp3 import MP3 
+from mutagen.mp3 import MP3
 
-def split(language, unit, page, dialogue_title, file_name, flag):
+dictionary = { 'eng': [u'and', u'of', u'the', u'to', u'and' , u'from'],
+               'fra': [u'et']} 
+
+def maxSplit(language, p):
+    n_split = 0
+    k_n = u''
+    for k in dictionary[language]:        
+        split_command = r' \b(?=\b' + k + r')+'
+        cks = re.split(split_command, p)
+        if len(cks) > n_split:
+            n_split = len(cks)
+            k_n = k
+            
+    split_command = r' \b(?=\b' + k_n + r')+'
+    
+    return re.split(split_command, p)
+    
+
+def split(language, unit, page, dialogue_title, file_name, flag, use_dictionary):
     """
     This function split a given text file following some syntacti rules and following a dictionary.
     It also calls the synchornization library aeneas
@@ -49,17 +67,21 @@ def split(language, unit, page, dialogue_title, file_name, flag):
 
     # Flag used to identify the first line of the fin file reserved
     # to the title
+    logging.debug('Using dictionary language \'%s\'', language)
     set_mp3_title = False
     for l in fin:        
         if not set_mp3_title:
             if l != '\n': # if title not a blank line, else do nothing
                 dialogue_title = l.strip('\n')
                 # writing dialogue title to file for mp3 synchronization   
-                split_file.write(dialogue_title + '\n')                
+                split_file.write(dialogue_title + u'\n')
+            else:
+                split_file.write(u'\n')
             set_mp3_title = True
         elif l != '\n' and l.find(r'\b') == -1:            
-            word = l.split(' ')        
-            ist = 0        
+            word = l.split(' ')            
+            ist = 0
+            print word
             # first word of the line is not a key and the name of who's talking
             # is not set
             if word[0] not in character_name and not character_name_is_set:
@@ -67,13 +89,15 @@ def split(language, unit, page, dialogue_title, file_name, flag):
                 character_name[key]   = [] # preparing for the phrase(s) that will be spoken                
                 character_name_is_set = True
                 ist         = 1        
-                speech_line_spoken_by.append((key,num_line))                
+                speech_line_spoken_by.append((key,num_line))
+                print '.', key, num_line
             # the first word is a name already present
             elif word[0] in character_name:
                 character_name_is_set = True                    
                 key         = word[0].strip(':')                
                 ist         = 1
-                speech_line_spoken_by.append((key,num_line))                
+                speech_line_spoken_by.append((key,num_line))
+                print '.. ', key, num_line
             # There is no name in the first word    
             else:
                 ist = 0            
@@ -83,20 +107,24 @@ def split(language, unit, page, dialogue_title, file_name, flag):
             character_name[key].append(phrase.strip('\n '))
             wd = phrase.split()        
             if len(wd) <= 2:
-                # By default 2 words are kept together
+                # By default 2 words are kept together                
                 split_file.write(phrase)                
                 speech_text_lines.append(phrase.strip('\n '))
                 to_print.append(0)
+                num_line = num_line + 1
             else:                
                 # Building speech line by line, storing how many split per line per author
                 ck = re.split(r'(?<=[.,;?!:]) +', phrase.strip('\n '))                
                 for p in ck:
-                    cks = re.split(r' \b(?=\bet)+', p)                    
-                    for cksi in cks:
-                        split_file.write(cksi+'\n')                        
-                        speech_text_lines.append(cksi.strip('\n '))
-                        to_print.append(0)
-                        num_line = num_line + 1
+                    #cks = re.split(r' \b(?=\bet)+', p) # old version
+                    # splitting on dictionary
+                    if use_dictionary:                        
+                        cks = maxSplit(language, p)
+                        for cksi in cks:
+                            split_file.write(cksi + u'\n')
+                            speech_text_lines.append(cksi.strip('\n '))
+                            to_print.append(0)
+                            num_line = num_line + 1
         elif l.find(r'\b') != -1:            
             comment_text = l.strip('\n')
             speech_text_lines.append(comment_text)
