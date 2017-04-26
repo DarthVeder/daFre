@@ -81,7 +81,7 @@ def split(language, unit, page, dialogue_title, file_name, flag, use_dictionary)
         elif l != '\n' and l.find(r'\b') == -1:            
             word = l.split(' ')            
             ist = 0
-            print word
+            logging.debug('Words: %s', word)
             # first word of the line is not a key and the name of who's talking
             # is not set
             if word[0] not in character_name and not character_name_is_set:
@@ -90,14 +90,16 @@ def split(language, unit, page, dialogue_title, file_name, flag, use_dictionary)
                 character_name_is_set = True
                 ist         = 1        
                 speech_line_spoken_by.append((key,num_line))
-                print '.', key, num_line
+                key_num_line = key + u' ' + str(num_line)
+                logging.debug('. %s', key_num_line)
             # the first word is a name already present
             elif word[0] in character_name:
                 character_name_is_set = True                    
                 key         = word[0].strip(':')                
                 ist         = 1
                 speech_line_spoken_by.append((key,num_line))
-                print '.. ', key, num_line
+                key_num_line = key + u' ' + str(num_line)
+                logging.debug('.. %s', key_num_line)
             # There is no name in the first word    
             else:
                 ist = 0            
