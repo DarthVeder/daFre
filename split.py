@@ -67,7 +67,10 @@ def split(language, unit, page, dialogue_title, file_name, flag, use_dictionary)
 
     # Flag used to identify the first line of the fin file reserved
     # to the title
-    logging.debug('Using dictionary language \'%s\'', language)
+    if use_dictionary == True:
+        logging.debug('Using dictionary language \'%s\'', language)
+    else:
+        logging.debug('Using NO dictionary')
     set_mp3_title = False
     for l in fin:        
         if not set_mp3_title:
@@ -116,17 +119,24 @@ def split(language, unit, page, dialogue_title, file_name, flag, use_dictionary)
                 num_line = num_line + 1
             else:                
                 # Building speech line by line, storing how many split per line per author
-                ck = re.split(r'(?<=[.,;?!:]) +', phrase.strip('\n '))                
-                for p in ck:
+                ck = re.split(r'(?<=[.,;?!:]) +', phrase.strip('\n '))
+                for p in ck:                              
                     #cks = re.split(r' \b(?=\bet)+', p) # old version
                     # splitting on dictionary
-                    if use_dictionary:                        
+                    if use_dictionary == True:
+                        print 'here'      
                         cks = maxSplit(language, p)
                         for cksi in cks:
                             split_file.write(cksi + u'\n')
                             speech_text_lines.append(cksi.strip('\n '))
                             to_print.append(0)
                             num_line = num_line + 1
+                    else:                        
+                        split_file.write(p + u'\n')
+                        speech_text_lines.append(p.strip('\n '))
+                        to_print.append(0)
+                        num_line = num_line + 1
+                        
         elif l.find(r'\b') != -1:            
             comment_text = l.strip('\n')
             speech_text_lines.append(comment_text)
