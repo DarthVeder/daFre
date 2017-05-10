@@ -37,7 +37,10 @@ def parse(rel_file_name):
 
     options = config.options('default')
     for option in options:
-        dict1[option] = config.get('default',option)
+        if option == 'use_dictionary':
+            dict1[option] = config.getboolean('default', option)
+        else:
+            dict1[option] = config.get('default', option)
 
     # Check that the directory entries end with a slash:
     if not dict1['source_directory'].endswith('/'):
@@ -81,9 +84,9 @@ def readUnits(config):
             source_base_file_name = l.split('/')[-1]
             tmp                   = source_base_file_name.split('.')[0].split('_')
             logging.debug('Source base file name: %s', tmp)
-            volume                = config['volume_number']
-            unit                  = tmp[0][1]
-            title_mp3             = ' '.join( tmp[2:-1] )
+            volume                = config['volume_number']            
+            unit                  = tmp[0][1:]
+            title_mp3             = ' '.join( tmp[1:-1] )            
             page_num              = int(tmp[-1].replace('p',''))
             page_txt              = 'Page ' + str(page_num)
     
@@ -128,6 +131,7 @@ if __name__ == '__main__':
     entries     = {}
     entries     = readUnits(config)
     logging.info('Done')
+    logging.info('Aeneas flag: %s', config['flag'])
 
     logging.info('Examining each entry...')
     for e in entries.keys():
@@ -137,7 +141,7 @@ if __name__ == '__main__':
         
         # destination folder names
         destination_dir = file_name['newaudio'].split('.')[0]
-        logging.debug('desitnation_dir=%s',destination_dir)
+        logging.debug('destination_dir=%s',destination_dir)
         
         # preparing destination directory if required                
         if not os.path.isdir(destination_dir):
@@ -153,7 +157,7 @@ if __name__ == '__main__':
         # building label file
         if split_text:            
             logging.info('processing Unit %s', unit)
-            split.split(language, unit, page, title, file_name, flag, \
+            split.split(language, unit, page, title, file_name, config['flag'], \
                         config['use_dictionary'])
     logging.info('Done')
 

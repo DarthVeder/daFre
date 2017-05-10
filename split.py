@@ -66,7 +66,7 @@ def split(language, unit, page, dialogue_title, file_name, flag, use_dictionary)
                     # this is why num_line is 2
 
     # Flag used to identify the first line of the fin file reserved
-    # to the title
+    # to the title    
     if use_dictionary == True:
         logging.debug('Using dictionary language \'%s\'', language)
     else:
@@ -123,8 +123,7 @@ def split(language, unit, page, dialogue_title, file_name, flag, use_dictionary)
                 for p in ck:                              
                     #cks = re.split(r' \b(?=\bet)+', p) # old version
                     # splitting on dictionary
-                    if use_dictionary == True:
-                        print 'here'      
+                    if use_dictionary == True:                        
                         cks = maxSplit(language, p)
                         for cksi in cks:
                             split_file.write(cksi + u'\n')
@@ -136,7 +135,8 @@ def split(language, unit, page, dialogue_title, file_name, flag, use_dictionary)
                         speech_text_lines.append(p.strip('\n '))
                         to_print.append(0)
                         num_line = num_line + 1
-                        
+                #split_file.write(u'\n')
+    
         elif l.find(r'\b') != -1:            
             comment_text = l.strip('\n')
             speech_text_lines.append(comment_text)
@@ -165,15 +165,22 @@ def split(language, unit, page, dialogue_title, file_name, flag, use_dictionary)
     logging.debug('Map file: %s',out_map)
     if flag != 'nosync':
         logging.info('Synchronization required')
+        aeneas_shift = u' -r=mfcc_window_shift=0.012 '
         command =   u'python -m aeneas.tools.execute_task ' \
                   + path + audio_file + u' ' + out_file \
                   + u' \"task_language=' + language \
                   + u'|os_task_file_format=audm|is_text_type=plain\" ' \
-                  + out_map
+                  + out_map \
+	          + ' --presets-word '\
+	          + aeneas_shift
         os.system(command)
         logging.debug('Aeneas command: %s',command)
 
-    # preparing the structure with the timing        
+    # preparing the structure with the timing
+    if aeneas_shift != '':
+        out_map = out_map.split('-')[0]
+        logging.debug('Found aeneas specific shift: %s', aeneas_shift)
+    
     fin = io.open(out_map, encoding='utf-8', mode='r')
 
     # parsing the time map

@@ -55,7 +55,7 @@ def writeXml(language, unit, dialogue_title, page, audio_file, \
     for i in range(0,len(text_to_print)):        
         lr = ET.SubElement(s, 'line')
         lr.attrib['ref'] = name_to_id[text_to_print[i][0]]
-        time = text_to_print[i][1][:]
+        time = text_to_print[i][1][:]        
         phrase = text_to_print[i][2][:]               
         
         itime = 0
@@ -65,7 +65,8 @@ def writeXml(language, unit, dialogue_title, page, audio_file, \
                 is_comment = True                
             
             if not is_comment:                
-                tmp                 = float(time[itime])            
+                #tmp                 = float(time[itime])            
+                tmp                 = float(time[itime]) -0.25           
                 time_string         = ' %.6f ' % tmp
                 cue                 = ET.SubElement(lr, 'cue')
                 cue.attrib['start'] = time_string            
